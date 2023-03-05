@@ -9,7 +9,7 @@ type Product struct {
 	ImageAssets       []ImageAsset `json:"imageAssets"`
 	PackageSize       string       `json:"packageSize"`
 	Shoppable         bool         `json:"shoppable"`
-	Prices            Prices       `json:"price"`
+	Prices            Prices       `json:"prices"`
 	PricingUnits      PricingUnits `json:"pricingUnits"`
 	Badges            Badges       `json:"badges"`
 	StockStatus       string       `json:"stockStatus"`
@@ -22,6 +22,9 @@ type Product struct {
 	IsVariant         bool         `json:"isVariant"`
 	OfferType         string       `json:"offerType"`
 	HasMultipleOffers bool         `json:"hasMultipleOffers"`
+	OfferId           string       `json:"offerId"`
 	Aisle             Aisle        `json:"aisle"`
 	Sponsored         bool         `json:"sponsored"`
 }
+
+type Products []*Product
