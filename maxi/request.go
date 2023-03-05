@@ -2,21 +2,22 @@ package maxi
 
 import (
 	"bytes"
-	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/markarko/maxi-api/data"
 )
 
 var url string = "https://api.pcexpress.ca/product-facade/v3/products/search"
 
-func GetAllProducts(keyword string) {
-	requestBody := []byte(`{"pagination":{"from":0,"size":48},"banner":"maxi","cartId":"ec770625-d847-4646-8a75-334c906a7be5","lang":"fr","date":"02032023","storeId":"8662","pcId":null,"pickupType":"STORE","offerType":"ALL","term":"eggs","userData":{"domainUserId":"3d30badc-12a3-4fe7-a019-4a86eb1a9908","sessionId":"f1d2e424-416d-4996-a999-544affbb63ee"}}`)
+func GetAllProducts(keyword string) *data.ProductsContainer {
+	requestBody := []byte(`{"pagination":{"from":0,"size":48},"banner":"maxi","cartId":"ec770625-d847-4646-8a75-334c906a7be5","lang":"fr","date":"02032023","storeId":"8662","pcId":null,"pickupType":"STORE","offerType":"ALL","term":"eggs","userData":{"domainUserId":"","sessionId":""}}`)
 
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(requestBody))
 
 	if err != nil {
 		log.Println(err)
-		return
+		return nil
 	}
 
 	req.Header.Add("Accept", "application/json, text/plain, */*")
@@ -36,15 +37,21 @@ func GetAllProducts(keyword string) {
 	res, err := client.Do(req)
 
 	if err != nil {
+		log.Println("Can't make request")
 		log.Println(err)
+		return nil
 	}
 
 	defer res.Body.Close()
-	body, err := ioutil.ReadAll(res.Body)
+
+	products := &data.ProductsContainer{}
+	err = products.FromJSON(res.Body)
 
 	if err != nil {
+		log.Println("Can't unmarshal json")
 		log.Println(err)
+		return nil
 	}
 
-	log.Println(string(body))
+	return products
 }
