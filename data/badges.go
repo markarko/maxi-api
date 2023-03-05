@@ -1,8 +1,8 @@
 package data
 
 type Badges struct {
-	TextBadge    string `json:"textBadge"`
-	LoyaltyBadge string `json:"loyaltyBadge"`
-	DealBadge    string `json:"dealBadge"`
-	NewItemBadge string `json:"newItemBadge"`
+	TextBadge    interface{} `json:"textBadge"`
+	LoyaltyBadge interface{} `json:"loyaltyBadge"`
+	DealBadge    interface{} `json:"dealBadge"`
+	NewItemBadge interface{} `json:"newItemBadge"`
 }
