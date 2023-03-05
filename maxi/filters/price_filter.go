@@ -27,7 +27,7 @@ func GetProductsWithSmallerPrice(products data.Products, price float64) data.Pro
 func GetProductsWithEqualPrice(products data.Products, price float64) data.Products {
 	var filteredProducts data.Products
 	for _, product := range products {
-		if float64(product.Prices.Price.Value) < price {
+		if float64(product.Prices.Price.Value) == price {
 			filteredProducts = append(filteredProducts, product)
 		}
 	}
