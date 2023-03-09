@@ -17,8 +17,12 @@ func NewProducts(l *log.Logger) *Products {
 
 func (p *Products) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
+		p.l.Println(r.Header)
+		if r.Header.Get("X-Api-Key") == "" || !ValidApiKey(r.Header.Get("X-Api-Key")) {
+			rw.WriteHeader(http.StatusUnauthorized)
+			return
+		}
 
-		//prod := &data.Product{}
 		products := maxi.GetAllProducts("eggs")
 		if products == nil {
 			http.Error(rw, "Unable to get products", http.StatusInternalServerError)
@@ -30,5 +34,6 @@ func (p *Products) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
 			http.Error(rw, "Unable to unmarshal json", http.StatusInternalServerError)
 		}
 	}
-	//rw.WriteHeader(http.StatusMethodNotAllowed)
+
+	rw.WriteHeader(http.StatusMethodNotAllowed)
 }

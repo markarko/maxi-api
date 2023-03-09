@@ -12,11 +12,15 @@ import (
 )
 
 func main() {
+	handlers.InitMongodb()
+
 	l := log.New(os.Stdout, "maxi-api ", log.LstdFlags)
 	ph := handlers.NewProducts(l)
+	akh := handlers.NewApiKeyHandler(l)
 
 	sm := http.NewServeMux()
 	sm.HandleFunc("/products", ph.ServeHTTP)
+	sm.HandleFunc("/api-key", akh.ServeHTTP)
 
 	s := &http.Server{
 		Addr:         "localhost:8080",
